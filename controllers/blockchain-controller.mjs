@@ -1,3 +1,4 @@
+import Block from '../models/Block.mjs';
 import { blockchain } from '../startup.mjs';
 
 const getBlockchain = (req, res, next) => {
@@ -9,7 +10,10 @@ const getLatestBlock = (req, res, next) => {
 };
 
 const addNewBlock = (req, res, next) => {
-  res.status(201).json({ success: true, data: 'Add New Block fungerar!' });
+  const data = req.body;
+  blockchain.addNewBlock(data);
+  const newBlock = blockchain.getLatestBlock();
+  res.status(201).json({ success: true, data: newBlock });
 };
 
 export { getBlockchain, addNewBlock, getLatestBlock };

@@ -1,4 +1,4 @@
-import crypto from 'crypto-js';
+import { createHash } from '../utils/crypto-lib.mjs';
 
 export default class Block {
   constructor(index, timestamp, data, previousHash = '') {
@@ -10,13 +10,11 @@ export default class Block {
   }
 
   calculateHash() {
-    return crypto
-      .SHA256(
-        this.index +
-          this.previousHash +
-          this.timestamp +
-          JSON.stringify(this.data)
-      )
-      .toString();
+    return createHash(
+      this.index +
+        this.previousHash +
+        this.timestamp +
+        JSON.stringify(this.data)
+    );
   }
 }

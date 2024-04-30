@@ -1,8 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { Blockchain } from './models/Blockchain.mjs';
 import blockchainRouter from './routes/blockchain-routes.mjs';
-import attachBlockchain from './middleware/attachBlockchain.mjs';
 
 dotenv.config({ path: './config/config.env' });
 
