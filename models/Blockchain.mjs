@@ -8,4 +8,10 @@ export class Blockchain {
   createGenesisBlock() {
     return new Block(0, new Date(), 'Genesis Block', '0');
   }
+
+  getLatestBlock() {
+    return this.chain[this.chain.length - 1];
+  }
+
+  addNewBlock() {}
 }
