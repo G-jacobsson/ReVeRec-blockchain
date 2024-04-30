@@ -10,10 +10,6 @@ const app = express();
 
 app.use(express.json());
 
-const blockchain = new Blockchain();
-
-app.use(attachBlockchain(blockchain));
-
 app.use('/api/v1/reverec', blockchainRouter);
 
 const PORT = process.env.PORT || 5010;
