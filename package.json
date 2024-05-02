@@ -4,14 +4,16 @@
   "description": "A recruitment application with blockchain-based backend, made with Node.js. Assignment in the Blockchain Developer Program @ Medieinstitutet.",
   "main": "server.mjs",
   "scripts": {
-    "dev": "nodemon server",
-    "start": "NODE_ENV=production node server"
+    "dev": "nodemon --env-file=config/config.env server.mjs",
+    "start": "NODE_ENV=production node --env-file=config/config.env server.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@vitest/ui": "^1.5.3",
+    "nodemon": "^3.1.0",
+    "vitest": "^1.5.3"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
