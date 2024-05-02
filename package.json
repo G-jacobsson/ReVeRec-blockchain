@@ -1,5 +1,5 @@
 {
-  "name": "recruitify-blockchain",
+  "name": "reverec-blockchain",
   "version": "1.0.0",
   "description": "A recruitment application with blockchain-based backend, made with Node.js. Assignment in the Blockchain Developer Program @ Medieinstitutet.",
   "main": "server.mjs",
