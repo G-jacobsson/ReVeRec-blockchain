@@ -8,7 +8,7 @@ export class Blockchain {
   createGenesisBlock() {
     return {
       index: 0,
-      timestamp: new Date(),
+      timestamp: Date.now(),
       data: 'Genesis Block',
       hash: '0',
     };
@@ -22,11 +22,22 @@ export class Blockchain {
     const latestBlock = this.getLatestBlock();
     const newBlock = new Block(
       latestBlock.index + 1,
-      new Date(),
+      Date.now(),
       newBlockData,
       latestBlock.hash
     );
     newBlock.hash = newBlock.calculateHash();
     this.chain.push(newBlock);
+    return newBlock;
+  }
+
+  findJobAd(id) {
+    for (let block of this.chain) {
+      if (block.data && block.data.jobAd && block.data.jobAd.id === id) {
+        return block.data.jobAd;
+      }
+    }
+
+    return null;
   }
 }
