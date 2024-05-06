@@ -17,6 +17,7 @@ const registerCandidate = (req, res, next) => {
 
     const newBlockData = {
       candidate: node,
+      status: 'registered',
     };
     const newBlock = blockchain.addNewBlock(newBlockData);
 
@@ -24,7 +25,6 @@ const registerCandidate = (req, res, next) => {
       success: true,
       statusCode: 201,
       data: {
-        message: `Candidate ${node.nodeUrl} is registered`,
         block: newBlock,
       },
     });
