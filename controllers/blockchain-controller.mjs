@@ -1,4 +1,3 @@
-import Block from '../models/Block.mjs';
 import { JobAd } from '../models/JobAd.mjs';
 import { blockchain } from '../startup.mjs';
 

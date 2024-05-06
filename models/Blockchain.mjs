@@ -3,6 +3,10 @@ import Block from './Block.mjs';
 export class Blockchain {
   constructor() {
     this.chain = [this.createGenesisBlock()];
+
+    this.candidateNodes = [];
+
+    this.nodeUrl = process.argv[3];
   }
 
   createGenesisBlock() {
