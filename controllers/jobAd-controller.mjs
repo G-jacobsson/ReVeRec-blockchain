@@ -59,7 +59,9 @@ const getJobAd = (req, res, next) => {
 const updateJobAd = (req, res, next) => {
   const id = req.params.id;
   const updatedData = req.body;
+  console.log(`Searching for job ad with ID: ${id}`);
   const jobAd = JobAd.findJobAd(id);
+  console.log(`Found job ad: ${JSON.stringify(jobAd)}`);
 
   if (!jobAd) {
     return res.status(404).json({
@@ -79,9 +81,13 @@ const updateJobAd = (req, res, next) => {
     'updated',
     jobAd.version + 1
   );
+  req.jobAd = updatedJobAd;
 
-  const newBlock = blockchain.addNewBlock({ jobAd: updatedJobAd });
-  res.status(204).json({ success: true, statusCode: 204, data: newBlock });
+  const updatedBlockData = {
+    jobAd: updatedJobAd,
+  };
+  req.updatedBlockData = updatedBlockData;
+  next();
 };
 
 export { addJobAd, getJobAd, updateJobAd };

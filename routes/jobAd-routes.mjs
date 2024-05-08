@@ -10,6 +10,6 @@ const jobAdRouter = express.Router();
 
 jobAdRouter.route('/').post(addJobAd, addNewBlock);
 
-jobAdRouter.route('/:id').get(getJobAd).put(updateJobAd);
+jobAdRouter.route('/:id').get(getJobAd).put(updateJobAd, addNewBlock);
 
 export default jobAdRouter;

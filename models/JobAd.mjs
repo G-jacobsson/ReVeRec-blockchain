@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { blockchain } from '../startup.mjs';
 
 export class JobAd {
   constructor(
@@ -21,8 +22,8 @@ export class JobAd {
     this.version = version;
   }
 
-  findJobAd(id) {
-    for (let block of this.chain) {
+  static findJobAd(id) {
+    for (let block of blockchain.chain) {
       if (block.data && block.data.jobAd && block.data.jobAd.id === id) {
         return block.data.jobAd;
       }
@@ -31,10 +32,10 @@ export class JobAd {
     return null;
   }
 
-  findAllJobAds(id) {
+  static findAllJobAds(id) {
     const jobAds = [];
 
-    for (let block of this.chain) {
+    for (let block of blockchain.chain) {
       if (block.data && block.data.jobAd && block.data.jobAd.id === id) {
         jobAds.push(block.data.jobAd);
       }

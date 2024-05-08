@@ -18,7 +18,7 @@ const registerCandidate = async (req, res, next) => {
 
     syncCandidates(node.nodeUrl);
 
-    await synchronizeChain(node.nodeUrl);
+    await synchronizeChain();
 
     res.status(201).json({
       success: true,

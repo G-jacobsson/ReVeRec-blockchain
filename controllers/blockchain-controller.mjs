@@ -13,13 +13,14 @@ const getLatestBlock = (req, res, next) => {
 };
 
 const addNewBlock = async (req, res, next) => {
+  console.log('addNewBlock called');
   const newBlockData = {
     jobAd: req.jobAd,
   };
-  console.log('JobAd', newBlockData);
-  const newBlock = blockchain.addNewBlock(req.newBlockData);
+  const newBlock = blockchain.addNewBlock(newBlockData);
 
   blockchain.candidateNodes.forEach(async (url) => {
+    console.log(`Broadcasting new block to ${url}`);
     const body = newBlock;
     await fetch(`${url}/api/v1/reverec/broadcast`, {
       method: 'POST',
@@ -33,16 +34,10 @@ const addNewBlock = async (req, res, next) => {
 };
 
 const broadcast = (req, res, next) => {
-  console.log('Broadcast function was called');
   const newBlock = req.body;
-  console.log(newBlock);
   const latestBlock = blockchain.getLatestBlock();
   const hash = latestBlock.hash === newBlock.previousHash;
   const index = latestBlock.index + 1 === newBlock.index;
-  console.log('hash check', hash);
-  console.log('index check', index);
-  console.log('New block', newBlock);
-  console.log('Latest Block', latestBlock);
 
   if (hash && index) {
     blockchain.chain.push(newBlock);
@@ -60,18 +55,27 @@ const broadcast = (req, res, next) => {
   }
 };
 
-const synchronizeChain = async (req, res, next) => {
-  try {
-    blockchain.candidateNodes.forEach(async (newNodeUrl) => {
-      const response = await fetch(`${newNodeUrl}/api/v1/reverec`);
+const synchronizeChain = async () => {
+  const currentLength = blockchain.chain.length;
+  let maxLength = currentLength;
+  let longestChain = null;
+
+  for (const nodeUrl of blockchain.candidateNodes) {
+    try {
+      const response = await fetch(`${nodeUrl}/api/v1/reverec`);
       const { data: newNodeBlockchain } = await response.json();
 
-      if (newNodeBlockchain.length > blockchain.chain.length) {
-        blockchain.chain = newNodeBlockchain;
+      if (newNodeBlockchain.chain.length > maxLength) {
+        maxLength = newNodeBlockchain.chain.length;
+        longestChain = newNodeBlockchain.chain;
       }
-    });
-  } catch (error) {
-    console.error('Error synchronizing chain:', error);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (longestChain && blockchain.validateChain(longestChain)) {
+    blockchain.chain = longestChain;
   }
 };
 
