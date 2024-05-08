@@ -34,26 +34,4 @@ export class Blockchain {
     this.chain.push(newBlock);
     return newBlock;
   }
-
-  findJobAd(id) {
-    for (let block of this.chain) {
-      if (block.data && block.data.jobAd && block.data.jobAd.id === id) {
-        return block.data.jobAd;
-      }
-    }
-
-    return null;
-  }
-
-  findAllJobAds(id) {
-    const jobAds = [];
-
-    for (let block of this.chain) {
-      if (block.data && block.data.jobAd && block.data.jobAd.id === id) {
-        jobAds.push(block.data.jobAd);
-      }
-    }
-
-    return jobAds;
-  }
 }

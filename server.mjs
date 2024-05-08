@@ -10,8 +10,8 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1/reverec', blockchainRouter);
-app.use('/api/v1/reverec/jobs', jobAdRouter);
 app.use('/api/v1/reverec/candidates', candidateRouter);
+app.use('/api/v1/reverec/jobs', jobAdRouter);
 
 app.listen(PORT, () =>
   console.log(

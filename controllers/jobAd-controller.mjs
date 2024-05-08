@@ -31,21 +31,19 @@ const addJobAd = (req, res, next) => {
       qualifications
     );
     req.jobAd = jobAd;
-    // next();
 
     const newBlockData = {
       jobAd: jobAd,
     };
 
-    const newBlock = blockchain.addNewBlock(newBlockData);
-
-    res.status(201).json({ success: true, statusCode: 201, data: newBlock });
+    req.newBlockData = newBlockData;
+    next();
   }
 };
 
 const getJobAd = (req, res, next) => {
   const id = req.params.id;
-  const jobAds = blockchain.findAllJobAds(id);
+  const jobAds = JobAd.findAllJobAds(id);
 
   if (jobAds.length === 0) {
     return res.status(404).json({
@@ -61,7 +59,7 @@ const getJobAd = (req, res, next) => {
 const updateJobAd = (req, res, next) => {
   const id = req.params.id;
   const updatedData = req.body;
-  const jobAd = blockchain.findJobAd(id);
+  const jobAd = JobAd.findJobAd(id);
 
   if (!jobAd) {
     return res.status(404).json({

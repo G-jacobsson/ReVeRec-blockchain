@@ -1,4 +1,5 @@
 import { blockchain } from '../startup.mjs';
+import { broadcast, synchronizeChain } from './blockchain-controller.mjs';
 
 const listCandidates = (req, res, next) => {
   res
@@ -6,7 +7,7 @@ const listCandidates = (req, res, next) => {
     .json({ success: true, statusCode: 200, data: blockchain.candidateNodes });
 };
 
-const registerCandidate = (req, res, next) => {
+const registerCandidate = async (req, res, next) => {
   const node = req.body;
 
   if (
@@ -15,17 +16,15 @@ const registerCandidate = (req, res, next) => {
   ) {
     blockchain.candidateNodes.push(node.nodeUrl);
 
-    const newBlockData = {
-      candidate: node,
-      status: 'registered',
-    };
-    const newBlock = blockchain.addNewBlock(newBlockData);
+    syncCandidates(node.nodeUrl);
+
+    await synchronizeChain(node.nodeUrl);
 
     res.status(201).json({
       success: true,
       statusCode: 201,
       data: {
-        block: newBlock,
+        message: `Candidate ${node.nodeUrl} has now been registered`,
       },
     });
   } else {
@@ -34,6 +33,25 @@ const registerCandidate = (req, res, next) => {
       statusCode: 400,
       data: { message: `Candidate ${node.nodeUrl} is already registered` },
     });
+  }
+};
+
+const syncCandidates = (url) => {
+  const candidates = [...blockchain.candidateNodes, blockchain.nodeUrl];
+
+  try {
+    candidates.forEach(async (candidate) => {
+      const body = { nodeUrl: candidate };
+      await fetch(`${url}/api/v1/reverec/candidates/register-candidate`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 
