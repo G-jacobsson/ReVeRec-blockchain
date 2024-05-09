@@ -1,5 +1,4 @@
 import { JobAd } from '../models/JobAd.mjs';
-import { blockchain } from '../startup.mjs';
 
 const addJobAd = (req, res, next) => {
   const { id, title, description, location, salaryRange, qualifications } =
@@ -90,4 +89,34 @@ const updateJobAd = (req, res, next) => {
   next();
 };
 
-export { addJobAd, getJobAd, updateJobAd };
+const deleteJobAd = (req, res, next) => {
+  const id = req.params.id;
+  console.log(`Searching for job ad with ID: ${id}`);
+  const jobAd = JobAd.findJobAd(id);
+  console.log(`Found job ad: ${JSON.stringify(jobAd)}`);
+
+  if (!jobAd) {
+    return res.status(404).json({
+      success: false,
+      statusCode: 404,
+      error: 'No job advertisement found with the provided ID.',
+    });
+  }
+
+  const deletedJobAd = {
+    id: jobAd.id,
+    status: 'deleted',
+    version: jobAd.version + 1,
+  };
+
+  req.jobAd = deletedJobAd;
+
+  const deletedBlockData = {
+    jobAd: deletedJobAd,
+  };
+
+  req.deletedBlockData = deletedBlockData;
+  next();
+};
+
+export { addJobAd, getJobAd, updateJobAd, deleteJobAd };
