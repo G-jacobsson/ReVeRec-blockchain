@@ -1,5 +1,6 @@
 import { blockchain } from '../startup.mjs';
 import ErrorResponse from '../utils/ErrorResponse.mjs';
+import { saveBlockchain } from '../utils/saveBlockchain.mjs';
 
 const getBlockchain = (req, res, next) => {
   res.status(200).json({ success: true, statusCode: 200, data: blockchain });
@@ -31,6 +32,9 @@ const addNewBlock = async (req, res, next) => {
       },
     });
   });
+
+  await saveBlockchain(blockchain);
+
   res.status(201).json({ success: true, statusCode: 201, data: newBlock });
 };
 
