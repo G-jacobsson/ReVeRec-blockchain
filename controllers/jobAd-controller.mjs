@@ -1,4 +1,5 @@
 import { JobAd } from '../models/JobAd.mjs';
+import ErrorResponse from '../utils/ErrorResponse.mjs';
 
 const addJobAd = (req, res, next) => {
   const { id, title, description, location, salaryRange, qualifications } =
@@ -14,12 +15,12 @@ const addJobAd = (req, res, next) => {
   const isValidJobAd = requiredProperties.every((prop) => prop in req.body);
 
   if (!isValidJobAd) {
-    res.status(400).json({
-      success: false,
-      statusCode: 400,
-      error:
+    return next(
+      new ErrorResponse(
         'Invalid job advertisement data. Required data is: title, description, location, salaryRange and qualifications.',
-    });
+        400
+      )
+    );
   } else {
     const jobAd = new JobAd(
       id,
@@ -45,11 +46,12 @@ const getJobAd = (req, res, next) => {
   const jobAds = JobAd.findAllJobAds(id);
 
   if (jobAds.length === 0) {
-    return res.status(404).json({
-      success: false,
-      statusCode: 404,
-      error: 'No job advertisements found with the provided ID.',
-    });
+    return next(
+      new ErrorResponse(
+        'No job advertisements found with the provided ID.',
+        404
+      )
+    );
   }
 
   res.status(200).json({ success: true, statusCode: 200, data: jobAds });
@@ -63,11 +65,12 @@ const updateJobAd = (req, res, next) => {
   console.log(`Found job ad: ${JSON.stringify(jobAd)}`);
 
   if (!jobAd) {
-    return res.status(404).json({
-      success: false,
-      statusCode: 404,
-      error: 'No job advertisement found with the provided ID.',
-    });
+    return next(
+      new ErrorResponse(
+        'No job advertisements found with the provided ID.',
+        404
+      )
+    );
   }
 
   const updatedJobAd = new JobAd(
@@ -96,11 +99,12 @@ const deleteJobAd = (req, res, next) => {
   console.log(`Found job ad: ${JSON.stringify(jobAd)}`);
 
   if (!jobAd) {
-    return res.status(404).json({
-      success: false,
-      statusCode: 404,
-      error: 'No job advertisement found with the provided ID.',
-    });
+    return next(
+      new ErrorResponse(
+        'No job advertisements found with the provided ID.',
+        404
+      )
+    );
   }
 
   const deletedJobAd = {

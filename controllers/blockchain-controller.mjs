@@ -1,4 +1,5 @@
 import { blockchain } from '../startup.mjs';
+import ErrorResponse from '../utils/ErrorResponse.mjs';
 
 const getBlockchain = (req, res, next) => {
   res.status(200).json({ success: true, statusCode: 200, data: blockchain });
@@ -47,11 +48,9 @@ const broadcast = (req, res, next) => {
       data: { message: 'The new block is added and broadcasted' },
     });
   } else {
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      data: { message: 'The new block was rejected and not broadcasted' },
-    });
+    return next(
+      new ErrorResponse('The new block was rejected and not broadcasted', 500)
+    );
   }
 };
 
@@ -70,7 +69,7 @@ const synchronizeChain = async () => {
         longestChain = newNodeBlockchain.chain;
       }
     } catch (error) {
-      console.log(error);
+      throw new Error();
     }
   }
 

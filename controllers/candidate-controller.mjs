@@ -1,4 +1,5 @@
 import { blockchain } from '../startup.mjs';
+import ErrorResponse from '../utils/ErrorResponse.mjs';
 import { synchronizeChain } from './blockchain-controller.mjs';
 
 const listCandidates = (req, res, next) => {
@@ -16,9 +17,22 @@ const registerCandidate = async (req, res, next) => {
   ) {
     blockchain.candidateNodes.push(node.nodeUrl);
 
-    syncCandidates(node.nodeUrl);
+    try {
+      await syncCandidates(node.nodeUrl);
+    } catch (error) {
+      return next(
+        new ErrorResponse(
+          `Couldnt register candidate at ${node.nodeUrl}. Node is inactive or misspelled at registration.`,
+          500
+        )
+      );
+    }
 
-    await synchronizeChain();
+    try {
+      await synchronizeChain();
+    } catch (error) {
+      return next(new ErrorResponse(`Syncronizing chain is not working`, 500));
+    }
 
     res.status(201).json({
       success: true,
@@ -28,19 +42,17 @@ const registerCandidate = async (req, res, next) => {
       },
     });
   } else {
-    res.status(400).json({
-      success: false,
-      statusCode: 400,
-      data: { message: `Candidate ${node.nodeUrl} is already registered` },
-    });
+    return next(
+      new ErrorResponse(`Candidate ${node.nodeUrl} is already registered`, 500)
+    );
   }
 };
 
-const syncCandidates = (url) => {
+const syncCandidates = async (url) => {
   const candidates = [...blockchain.candidateNodes, blockchain.nodeUrl];
 
-  try {
-    candidates.forEach(async (candidate) => {
+  for (const candidate of candidates) {
+    try {
       const body = { nodeUrl: candidate };
       await fetch(`${url}/api/v1/reverec/candidates/register-candidate`, {
         method: 'POST',
@@ -49,9 +61,9 @@ const syncCandidates = (url) => {
           'Content-Type': 'application/json',
         },
       });
-    });
-  } catch (error) {
-    console.log(error);
+    } catch (error) {
+      throw new Error();
+    }
   }
 };
 
