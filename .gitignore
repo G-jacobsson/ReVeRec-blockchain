@@ -2,3 +2,4 @@ node_modules
 /config/config.env
 .vscode
 .DS_Store
+/logs/error.log
