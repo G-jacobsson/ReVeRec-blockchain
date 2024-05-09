@@ -15,6 +15,7 @@ export class Blockchain {
       timestamp: Date.now(),
       data: 'Genesis Block',
       hash: '0',
+      difficulty: +process.env.DIFFICULTY,
     };
   }
 
@@ -23,15 +24,23 @@ export class Blockchain {
   }
 
   addNewBlock(newBlockData) {
+    console.log('Before adding new block', newBlockData);
     const latestBlock = this.getLatestBlock();
+    const { nonce, difficulty, timestamp } = this.proofOfWork(
+      latestBlock.hash,
+      newBlockData
+    );
     const newBlock = new Block(
       latestBlock.index + 1,
-      Date.now(),
+      timestamp,
       newBlockData,
-      latestBlock.hash
+      latestBlock.hash,
+      difficulty,
+      nonce
     );
     newBlock.hash = newBlock.calculateHash();
     this.chain.push(newBlock);
+    console.log('After adding new block:', newBlock);
     return newBlock;
   }
 
@@ -46,13 +55,15 @@ export class Blockchain {
         currentBlockData.index,
         currentBlockData.timestamp,
         currentBlockData.data,
-        currentBlockData.previousHash
+        currentBlockData.previousHash,
+        currentBlockData.difficulty
       );
       const previousBlock = new Block(
         previousBlockData.index,
         previousBlockData.timestamp,
         previousBlockData.data,
-        previousBlockData.previousHash
+        previousBlockData.previousHash,
+        previousBlockData.difficulty
       );
 
       if (currentBlock.hash !== currentBlock.calculateHash()) {
@@ -65,5 +76,40 @@ export class Blockchain {
     }
 
     return isValid;
+  }
+
+  proofOfWork(previousHash, data) {
+    const latestBlock = this.getLatestBlock();
+    let difficulty, hash, timestamp;
+    let nonce = 1024;
+
+    do {
+      nonce++;
+      timestamp = Date.now();
+
+      difficulty = this.difficultyAdjustment(latestBlock, timestamp);
+      const newBlock = new Block(
+        latestBlock.index,
+        previousHash,
+        timestamp,
+        data,
+        nonce,
+        difficulty
+      );
+      hash = newBlock.calculateHash();
+    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
+
+    return { nonce, difficulty, timestamp };
+  }
+
+  difficultyAdjustment(latestBlock, timestamp) {
+    const MINE_RATE = process.env.MINE_RATE;
+    let { difficulty } = latestBlock;
+
+    if (difficulty < 1) return 1;
+
+    return timestamp - latestBlock.timestamp > MINE_RATE
+      ? +difficulty + 1
+      : +difficulty - 1;
   }
 }

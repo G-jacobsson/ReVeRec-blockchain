@@ -1,5 +1,5 @@
 import { blockchain } from '../startup.mjs';
-import synchronizeChain from './blockchain-controller.mjs';
+import { synchronizeChain } from './blockchain-controller.mjs';
 
 const listCandidates = (req, res, next) => {
   res
