@@ -2,7 +2,13 @@ import fs from 'fs';
 import path from 'path';
 
 const errorHandler = (err, req, res, next) => {
-  const filePath = path.join(__appdir, '/logs', 'error.log');
+  const dirPath = path.join(__appdir, '/logs');
+  const filePath = path.join(dirPath, 'error.log');
+
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath);
+  }
+
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
