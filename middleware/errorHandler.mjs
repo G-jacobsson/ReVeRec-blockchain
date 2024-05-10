@@ -14,7 +14,9 @@ const errorHandler = (err, req, res, next) => {
 
   const message = `Method: ${req.method} Url: ${
     req.originalUrl
-  } Date: ${new Date().toLocaleDateString()} Time: ${new Date().toLocaleTimeString()} - Message: ${
+  } Date: ${new Date().toLocaleDateString(
+    'sv-SE'
+  )} Time: ${new Date().toLocaleTimeString('sv-SE')} - Message: ${
     err.message
   }\n`;
 
