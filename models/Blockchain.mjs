@@ -24,7 +24,6 @@ export class Blockchain {
   }
 
   addNewBlock(newBlockData) {
-    console.log('Before adding new block', newBlockData);
     const latestBlock = this.getLatestBlock();
     const { nonce, difficulty, timestamp } = this.proofOfWork(
       latestBlock.hash,
@@ -40,7 +39,6 @@ export class Blockchain {
     );
     newBlock.hash = newBlock.calculateHash();
     this.chain.push(newBlock);
-    console.log('After adding new block:', newBlock);
     return newBlock;
   }
 

@@ -60,9 +60,7 @@ const getJobAd = (req, res, next) => {
 const updateJobAd = (req, res, next) => {
   const id = req.params.id;
   const updatedData = req.body;
-  console.log(`Searching for job ad with ID: ${id}`);
   const jobAd = JobAd.findJobAd(id);
-  console.log(`Found job ad: ${JSON.stringify(jobAd)}`);
 
   if (!jobAd) {
     return next(
@@ -94,9 +92,7 @@ const updateJobAd = (req, res, next) => {
 
 const deleteJobAd = (req, res, next) => {
   const id = req.params.id;
-  console.log(`Searching for job ad with ID: ${id}`);
   const jobAd = JobAd.findJobAd(id);
-  console.log(`Found job ad: ${JSON.stringify(jobAd)}`);
 
   if (!jobAd) {
     return next(

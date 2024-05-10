@@ -15,14 +15,12 @@ const getLatestBlock = (req, res, next) => {
 };
 
 const addNewBlock = async (req, res, next) => {
-  console.log('addNewBlock called');
   const newBlockData = {
     jobAd: req.jobAd,
   };
   const newBlock = blockchain.addNewBlock(newBlockData);
 
   blockchain.candidateNodes.forEach(async (url) => {
-    console.log(`Broadcasting new block to ${url}`);
     const body = newBlock;
     await fetch(`${url}/api/v1/reverec/broadcast`, {
       method: 'POST',
