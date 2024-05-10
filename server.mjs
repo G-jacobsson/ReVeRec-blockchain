@@ -8,6 +8,7 @@ import errorHandler from './middleware/errorHandler.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import ErrorResponse from './utils/ErrorResponse.mjs';
+import appLogger from './middleware/appLogger.mjs';
 
 const PORT = process.argv[2] || process.env.PORT;
 
@@ -20,6 +21,8 @@ global.__appdir = dirname;
 
 app.use(cors());
 app.use(express.json());
+
+app.use(appLogger);
 
 app.use('/api/v1/reverec', blockchainRouter);
 app.use('/api/v1/reverec/candidates', candidateRouter);
