@@ -104,10 +104,10 @@ export class Blockchain {
     const MINE_RATE = process.env.MINE_RATE;
     let { difficulty } = latestBlock;
 
-    if (difficulty < 1) return 1;
-
-    return timestamp - latestBlock.timestamp > MINE_RATE
-      ? +difficulty + 1
-      : +difficulty - 1;
+    if (timestamp - latestBlock.timestamp > MINE_RATE && difficulty < 4) {
+      return +difficulty + 1;
+    } else {
+      return +difficulty - 1;
+    }
   }
 }
