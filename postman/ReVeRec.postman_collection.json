@@ -12,16 +12,17 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5001/api/v1/reverec",
+					"raw": "http://localhost:5002/api/v1/reverec/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5001",
+					"port": "5002",
 					"path": [
 						"api",
 						"v1",
-						"reverec"
+						"reverec",
+						""
 					]
 				}
 			},
@@ -55,7 +56,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5001/api/v1/reverec/jobs/31ac115745f54eb9a5fa11ab14463c59",
+					"raw": "http://localhost:5001/api/v1/reverec/jobs/7a681e3109744960a897b951380c29ea",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -66,7 +67,7 @@
 						"v1",
 						"reverec",
 						"jobs",
-						"31ac115745f54eb9a5fa11ab14463c59"
+						"7a681e3109744960a897b951380c29ea"
 					]
 				}
 			},
@@ -79,7 +80,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Software Engineer\",\n  \"description\": \"Develop and maintain web applications\",\n  \"location\": \"Remote\",\n  \"salaryRange\": \"$80,000 - $100,000\",\n  \"qualifications\": \"Bachelor degree in Computer Science or related field\"\n}",
+					"raw": "{\n  \"title\": \"Software Engineer\",\n  \"description\": \"Develop and maintain web applications\",\n  \"location\": \"Remote\",\n  \"salaryRange\": \"$80,000 - $100,000\",\n  \"qualifications\": \"Bachelor degree in Computer Science or related field\",\n  \"responsibilities\": [\n    \"Collaborate with team members\",\n    \"Participate in code reviews\"\n  ],\n  \"applicationDeadline\": \"2024-06-30\",\n  \"contactInformation\": \"jobs@reverec.com\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -118,7 +119,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5001/api/v1/reverec/jobs/31ac115745f54eb9a5fa11ab14463c59",
+					"raw": "http://localhost:5001/api/v1/reverec/jobs/d8630d6714c44404859802a7e2a2b351",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -129,7 +130,7 @@
 						"v1",
 						"reverec",
 						"jobs",
-						"31ac115745f54eb9a5fa11ab14463c59"
+						"d8630d6714c44404859802a7e2a2b351"
 					]
 				}
 			},
@@ -141,18 +142,18 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5003/api/v1/reverec/jobs/e90f76a4606347048100d2cf613f4ee1",
+					"raw": "http://localhost:5001/api/v1/reverec/jobs/d8630d6714c44404859802a7e2a2b351",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5003",
+					"port": "5001",
 					"path": [
 						"api",
 						"v1",
 						"reverec",
 						"jobs",
-						"e90f76a4606347048100d2cf613f4ee1"
+						"d8630d6714c44404859802a7e2a2b351"
 					]
 				}
 			},
@@ -165,7 +166,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nodeUrl\": \"http://localhost:5001\"\n}",
+					"raw": "{\n    \"nodeUrl\": \"http://localhost:5002\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -196,12 +197,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5001/api/v1/reverec/candidates",
+					"raw": "http://localhost:5002/api/v1/reverec/candidates",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "5001",
+					"port": "5002",
 					"path": [
 						"api",
 						"v1",

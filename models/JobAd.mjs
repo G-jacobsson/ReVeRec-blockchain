@@ -9,15 +9,25 @@ export class JobAd {
     location,
     salaryRange,
     qualifications,
+    responsibilities = [],
+    applicationDeadline,
+    contactInformation,
     status = 'new',
     version = 1
   ) {
     this.id = id;
-    this.title = title;
-    this.description = description;
-    this.location = location;
-    this.salaryRange = salaryRange;
-    this.qualifications = qualifications;
+    this.jobAdDetails = {
+      title: title,
+      description: description,
+      location: location,
+      salaryRange: salaryRange,
+      qualifications: qualifications,
+      additionalDetails: {
+        responsibilities: responsibilities,
+        applicationDeadline: applicationDeadline,
+        contactInformation: contactInformation,
+      },
+    };
     this.status = status;
     this.version = version;
   }

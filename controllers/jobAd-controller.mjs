@@ -2,8 +2,17 @@ import { JobAd } from '../models/JobAd.mjs';
 import ErrorResponse from '../utils/ErrorResponse.mjs';
 
 const addJobAd = (req, res, next) => {
-  const { id, title, description, location, salaryRange, qualifications } =
-    req.body;
+  const {
+    id,
+    title,
+    description,
+    location,
+    salaryRange,
+    qualifications,
+    responsibilities,
+    applicationDeadline,
+    contactInformation,
+  } = req.body;
 
   const requiredProperties = [
     'title',
@@ -11,13 +20,16 @@ const addJobAd = (req, res, next) => {
     'location',
     'salaryRange',
     'qualifications',
+    'responsibilities',
+    'applicationDeadline',
+    'contactInformation',
   ];
   const isValidJobAd = requiredProperties.every((prop) => prop in req.body);
 
   if (!isValidJobAd) {
     return next(
       new ErrorResponse(
-        'Invalid job advertisement data. Required data is: title, description, location, salaryRange and qualifications.',
+        'Invalid job advertisement data. Required data is: title, description, location, salaryRange, qualifications, responsibilities, applicationDeadline, and contactInformation.',
         400
       )
     );
@@ -28,7 +40,10 @@ const addJobAd = (req, res, next) => {
       description,
       location,
       salaryRange,
-      qualifications
+      qualifications,
+      responsibilities,
+      applicationDeadline,
+      contactInformation
     );
     req.jobAd = jobAd;
 
@@ -78,6 +93,9 @@ const updateJobAd = (req, res, next) => {
     updatedData.location || jobAd.location,
     updatedData.salaryRange || jobAd.salaryRange,
     updatedData.qualifications || jobAd.qualifications,
+    updatedData.responsibilities || jobAd.responsibilities,
+    updatedData.applicationDeadline || jobAd.applicationDeadline,
+    updatedData.contactInformation || jobAd.contactInformation,
     'updated',
     jobAd.version + 1
   );

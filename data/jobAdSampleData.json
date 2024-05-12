@@ -3,5 +3,11 @@
   "description": "Develop and maintain web applications",
   "location": "Remote",
   "salaryRange": "$80,000 - $100,000",
-  "qualifications": "Bachelor degree in Computer Science or related field"
+  "qualifications": "Bachelor degree in Computer Science or related field",
+  "responsibilities": [
+    "Collaborate with team members",
+    "Participate in code reviews"
+  ],
+  "applicationDeadline": "2024-06-30",
+  "contactInformation": "jobs@reverec.com"
 }
